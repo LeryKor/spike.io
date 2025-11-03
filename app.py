@@ -961,7 +961,8 @@ def game_loop():
         socketio.sleep(1.0/TICK_RATE)
 
 
-if __name__=="__main__":
-
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
     socketio.start_background_task(game_loop)
-    socketio.run(app,host="0.0.0.0",port=5000)
+    socketio.run(app, host="0.0.0.0", port=port)
+
