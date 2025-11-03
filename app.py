@@ -1,7 +1,12 @@
 import os, random, time
 from math import sqrt, atan2, cos, sin
+
+import eventlet
+eventlet.monkey_patch()
+
 from flask import Flask, Response, request
 from flask_socketio import SocketIO, emit
+
 
 # ---------- ПАРАМЕТРЫ ----------
 WORLD_W, WORLD_H = 20000, 12000
@@ -22,7 +27,16 @@ PUSH_STRENGTH = 10.0
 
 # ---------- СЕРВЕР ----------
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode="eventlet")
+socketio = SocketIO(
+    app,
+    cors_allowed_origins="*",
+    async_mode="eventlet",
+    ping_timeout=20,
+    ping_interval=10,
+    logger=True,
+    engineio_logger=True
+)
+socketio.eio.allow_upgrades = False  # важно! отключаем переход на websocket
 
 players = {}
 pellets = []
@@ -962,12 +976,10 @@ def game_loop():
 
 
 if __name__ == "__main__":
-    import eventlet
-    eventlet.monkey_patch()
-
     port = int(os.environ.get("PORT", 5000))
     print(f"🚀 Starting Spike.io server on port {port}")
     socketio.start_background_task(game_loop)
     socketio.run(app, host="0.0.0.0", port=port)
+
 
 
