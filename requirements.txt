@@ -1,11 +1,6 @@
-# --- Основные зависимости ---
 flask==3.0.3
 flask-socketio==5.3.6
-eventlet==0.36.1
-
-# --- Дополнительно (опционально, но полезно) ---
-python-engineio==4.9.1
-python-socketio==5.11.3
-
-# --- Для стабильности на Render / Railway ---
+gevent==24.2.1
+gevent-websocket==0.10.1
 gunicorn==23.0.0
+
