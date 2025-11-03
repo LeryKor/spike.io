@@ -36,7 +36,13 @@ socketio = SocketIO(
     logger=True,
     engineio_logger=True
 )
-socketio.eio.allow_upgrades = False  # важно! отключаем переход на websocket
+
+# ✅ правильный способ запретить WebSocket-апгрейд:
+if hasattr(socketio, "server") and hasattr(socketio.server, "eio"):
+    socketio.server.eio.allow_upgrades = False
+else:
+    print("⚠️ Engine.IO backend not yet initialized; skipping upgrade restriction.")
+
 
 players = {}
 pellets = []
@@ -980,6 +986,7 @@ if __name__ == "__main__":
     print(f"🚀 Starting Spike.io server on port {port}")
     socketio.start_background_task(game_loop)
     socketio.run(app, host="0.0.0.0", port=port)
+
 
 
 
