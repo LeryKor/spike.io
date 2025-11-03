@@ -907,6 +907,17 @@ BUFF_POOL = [
     {"name": "+20% boost speed", "key": "boost_mult", "type": "add", "value": 0.20},
 ]
 
+game_started = False
+
+@socketio.on("connect")
+def on_connect():
+    global game_started
+    print(f"[CONNECT] {request.sid}")
+    if not game_started:
+        socketio.start_background_task(game_loop)
+        game_started = True
+        print("🎮 Game loop started.")
+
 def game_loop():
     last=time.time()
     while True:
@@ -984,8 +995,8 @@ def game_loop():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     print(f"🚀 Starting Spike.io server on port {port}")
-    socketio.start_background_task(game_loop)
     socketio.run(app, host="0.0.0.0", port=port)
+
 
 
 
