@@ -1,0 +1,11 @@
+# --- Основные зависимости ---
+flask==3.0.3
+flask-socketio==5.3.6
+eventlet==0.36.1
+
+# --- Дополнительно (опционально, но полезно) ---
+python-engineio==4.9.1
+python-socketio==5.11.3
+
+# --- Для стабильности на Render / Railway ---
+gunicorn==23.0.0
