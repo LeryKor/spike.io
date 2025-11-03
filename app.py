@@ -962,7 +962,12 @@ def game_loop():
 
 
 if __name__ == "__main__":
+    import eventlet
+    eventlet.monkey_patch()
+
     port = int(os.environ.get("PORT", 5000))
+    print(f"🚀 Starting Spike.io server on port {port}")
     socketio.start_background_task(game_loop)
     socketio.run(app, host="0.0.0.0", port=port)
+
 
